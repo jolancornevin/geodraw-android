@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geodrawmodel;
+package ot3.insa.fr.geodraw.models;
 
-import com.google.gson.Gson;
 
 /**
  *
@@ -34,10 +33,6 @@ public class GeoDrawModel
         Drawing trace = new Drawing();
         trace.addSegment(segment1);
         trace.addSegment(segment2);
-        
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(trace);
-        System.out.println(jsonString);
     }
 
 }

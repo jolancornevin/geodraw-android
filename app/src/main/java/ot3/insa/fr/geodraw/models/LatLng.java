@@ -1,4 +1,5 @@
-package geodrawmodel;
+
+package ot3.insa.fr.geodraw.models;
 
 /**
  * Respresents  a single GPS fix

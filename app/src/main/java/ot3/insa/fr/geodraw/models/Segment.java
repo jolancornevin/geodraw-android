@@ -1,4 +1,5 @@
-package geodrawmodel;
+
+package ot3.insa.fr.geodraw.models;
 
 import java.util.Collections;
 import java.util.LinkedList;
