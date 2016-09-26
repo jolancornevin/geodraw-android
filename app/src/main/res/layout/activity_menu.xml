@@ -10,8 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ot3.insa.fr.geodraw.MenuActivity">
 
+
     <TextView
+        android:text="Hello Word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="208dp"
+        android:id="@+id/Hello_word" />
 </RelativeLayout>

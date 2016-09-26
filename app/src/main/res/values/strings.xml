@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">GeoDraw</string>
+    <string name="my_games">My Games</string>
+    <string name="actual_games">In progress</string>
+    <string name="gallery">Gallery</string>
+    <string name="title_activity_tabs">TabsActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

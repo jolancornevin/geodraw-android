@@ -1,4 +1,3 @@
-
 package ot3.insa.fr.geodraw.models;
 
 import java.util.LinkedList;

@@ -33,6 +33,7 @@ public class GeoDrawModel
         Drawing trace = new Drawing();
         trace.addSegment(segment1);
         trace.addSegment(segment2);
+
     }
 
 }
