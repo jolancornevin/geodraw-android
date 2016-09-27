@@ -1,31 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <GridLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
         <TextView
+            android:id="@+id/gameName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:gravity="center"
+
             android:text="Partie 1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gameName" />
+            android:textAlignment="center" />
+
         <TextView
+            android:id="@+id/gameLock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".05"
+            android:gravity="center"
+
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/gameNbPlayers"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".20"
+            android:gravity="center"
+
             android:text="10/20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gameNbPlayers" />
+            android:textAlignment="center" />
+
         <TextView
+            android:id="@+id/gameTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight=".25"
+            android:gravity="center"
+
             android:text="00:18 / 01:00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/gameTime" />
+            android:textAlignment="center" />
+
         <TextView
-            android:text="Avion"
-            android:layout_width="wrap_content"
+            android:id="@+id/gameTheme"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/gameTheme" />
-    </GridLayout>
+
+            android:layout_weight=".15"
+            android:gravity="center"
+
+            android:text="Avion"
+            android:textAlignment="center" />
+    </LinearLayout>
 </LinearLayout>
