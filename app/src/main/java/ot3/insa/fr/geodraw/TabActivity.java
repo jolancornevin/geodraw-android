@@ -1,5 +1,6 @@
 package ot3.insa.fr.geodraw;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.Date;
+
+import ot3.insa.fr.geodraw.models.Game;
 
 public class TabActivity extends AppCompatActivity {
 
@@ -50,15 +56,31 @@ public class TabActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.add_black_24dp);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getApplicationContext(), CreateGameActivity.class);
+                startActivity(intent);
             }
         });
+
+        Intent intent = getIntent();
+        if (intent.getStringExtra(CreateGameActivity.EXTRA_NAME) != null) {
+            Game game = new Game(intent.getStringExtra(CreateGameActivity.EXTRA_NAME),
+                    intent.getBooleanExtra(CreateGameActivity.EXTRA_PRIVATE, false),
+                    0,
+                    intent.getIntExtra(CreateGameActivity.EXTRA_MAX_PLAYERS, -1),
+                    new Date(),
+                    new Date(new Date().getTime() +
+                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_DAYS, 0) * 24 * 60 * 60 * 1000 +
+                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_HOURS, 0) * 60 * 60 * 1000 +
+                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_MINUTES, 0) * 60 * 1000),
+                    intent.getStringExtra(CreateGameActivity.EXTRA_THEME));
+
+            System.out.println(game);
+        }
 
     }
 
@@ -134,12 +156,12 @@ public class TabActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            switch(position){
+            switch (position) {
                 case 0:
                     return GamesListActivity.newInstance(GamesListActivity.TypeList.PERSONNAL);
-                case 1 :
+                case 1:
                     return GamesListActivity.newInstance(GamesListActivity.TypeList.ONGOING);
-                case 2 :
+                case 2:
                     return GalleryActivity.newInstance();
             }
             return null;

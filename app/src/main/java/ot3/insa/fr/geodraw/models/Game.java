@@ -8,21 +8,22 @@ import java.util.Date;
  */
 
 public class Game {
+    private int id;
     private String name;
     private Boolean lock;
     private int currentNbPlayer;
     private int maxNbPlayer;
-    private Date currentTimeLeft;
-    private Date totalTime;
+    private Date startDate;
+    private Date endDate;
     private String theme;
 
-    public Game(String name, Boolean lock, int currentNbPlayer, int maxNbPlayer, Date currentTimeLeft, Date totalTime, String theme) {
+    public Game(String name, Boolean lock, int currentNbPlayer, int maxNbPlayer, Date startDate, Date endDate, String theme) {
         this.name = name;
         this.lock = lock;
         this.currentNbPlayer = currentNbPlayer;
         this.maxNbPlayer = maxNbPlayer;
-        this.currentTimeLeft = currentTimeLeft;
-        this.totalTime = totalTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.theme = theme;
     }
 
@@ -39,6 +40,14 @@ public class Game {
                 new Date(2016, 01, 27, 24, 00, 00), "Guerre"));
 
         return listGames;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Boolean getLock() {
@@ -73,20 +82,20 @@ public class Game {
         this.maxNbPlayer = maxNbPlayer;
     }
 
-    public Date getCurrentTimeLeft() {
-        return currentTimeLeft;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setCurrentTimeLeft(Date currentTimeLeft) {
-        this.currentTimeLeft = currentTimeLeft;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
-    public Date getTotalTime() {
-        return totalTime;
+    public Date getEndDate() {
+        return endDate;
     }
 
-    public void setTotalTime(Date totalTime) {
-        this.totalTime = totalTime;
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public String getTheme() {

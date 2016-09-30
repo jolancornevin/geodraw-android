@@ -6,13 +6,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ot3.insa.fr.geodraw.models.Game;
@@ -26,21 +26,12 @@ public class GamesListActivity extends Fragment {
         ONGOING,
         PERSONNAL
     }
-
-    private ListView mListView;
-    private String[] mStrings = {
-            "AAAAAAAA", "BBBBBBBB", "CCCCCCCC", "DDDDDDDD", "EEEEEEEE",
-            "FFFFFFFF", "GGGGGGGG", "HHHHHHHH", "IIIIIIII", "JJJJJJJJ",
-            "KKKKKKKK", "LLLLLLLL", "MMMMMMMM", "NNNNNNNN", "OOOOOOOO",
-            "PPPPPPPP", "QQQQQQQQ", "RRRRRRRR", "SSSSSSSS", "TTTTTTTT",
-            "UUUUUUUU", "VVVVVVVV", "WWWWWWWW", "XXXXXXXX", "YYYYYYYY",
-            "ZZZZZZZZ"
-    };
     private TypeList typeList;
 
     public GamesListActivity() {
 
     }
+
     public GamesListActivity(TypeList t) {
         this.typeList = t;
     }
@@ -61,7 +52,7 @@ public class GamesListActivity extends Fragment {
         GameAdapter adapter = new GameAdapter(this.getContext(), listG);
 
         //Récupération du composant ListView
-        ListView list = (ListView)rootView.findViewById(R.id.listGames);
+        ListView list = (ListView) rootView.findViewById(R.id.listGames);
 
         //Initialisation de la liste avec les données
         list.setAdapter(adapter);
@@ -85,6 +76,9 @@ public class GamesListActivity extends Fragment {
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
+            String timeLeft, timeTotal;
+            long diff;
+
             LinearLayout layoutItem;
             //(1) : Réutilisation des layouts
             if (convertView == null) {
@@ -95,16 +89,26 @@ public class GamesListActivity extends Fragment {
             }
 
             //(2) : Récupération des TextView de notre layout
-            TextView game_name = (TextView)layoutItem.findViewById(R.id.gameName);
-            TextView game_nb_players = (TextView)layoutItem.findViewById(R.id.gameNbPlayers);
-            TextView game_time = (TextView)layoutItem.findViewById(R.id.gameTime);
-            TextView game_theme = (TextView)layoutItem.findViewById(R.id.gameTheme);
+            TextView game_name = (TextView) layoutItem.findViewById(R.id.gameName);
+            TextView game_nb_players = (TextView) layoutItem.findViewById(R.id.gameNbPlayers);
+            TextView game_time = (TextView) layoutItem.findViewById(R.id.gameTime);
+            TextView game_theme = (TextView) layoutItem.findViewById(R.id.gameTheme);
 
             //(3) : Renseignement des valeurs
             Game game = mListG.get(position);
             game_name.setText(game.getName());
             game_nb_players.setText(game.getCurrentNbPlayer() + " / " + game.getMaxNbPlayer());
-            game_time.setText(game.getCurrentTimeLeft() + " / " + game.getTotalTime());
+
+            diff = Math.abs(game.getEndDate().getTime() - game.getStartDate().getTime());
+            //TODO
+            timeTotal = ((diff > (24 * 60 * 60 * 1000)) ? diff % (24 * 60 * 60 * 1000) : 00) + ":" +
+                    ((diff > (60 * 60 * 1000)) ? diff % (60 * 60 * 1000) : 00) + ":" +
+                    (diff % (60 * 1000) % 60);
+            diff = Math.abs(game.getEndDate().getTime() - new Date().getTime());
+            timeLeft = ((diff > (24 * 60 * 60 * 1000)) ? diff % (24 * 60 * 60 * 1000) : 00) + ":" +
+                    ((diff > (60 * 60 * 1000)) ? diff % (60 * 60 * 1000) : 00) + ":" +
+                    (diff % (60 * 1000) % 60);
+            game_time.setText(timeLeft + " / " + timeTotal);
             game_theme.setText(game.getTheme());
 
             //On retourne l'item créé.
