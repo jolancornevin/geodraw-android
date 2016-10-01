@@ -26,7 +26,10 @@ public class GamesListActivity extends Fragment {
         ONGOING,
         PERSONNAL
     }
+
     private TypeList typeList;
+    private ArrayList<Game> listG;
+    private GameAdapter gameAdapter;
 
     public GamesListActivity() {
 
@@ -40,22 +43,27 @@ public class GamesListActivity extends Fragment {
         return new GamesListActivity(t);
     }
 
+    public void addGameToList(Game game) {
+        listG.add(game);
+        gameAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.on_going_games, container, false);
 
         //Récupération de la liste des personnes
         //TODO à remplacer par les données de la bd
-        ArrayList<Game> listG = Game.getMockGames();
+        listG = Game.getMockGames();
 
         //Création et initialisation de l'Adapter pour les personnes
-        GameAdapter adapter = new GameAdapter(this.getContext(), listG);
+        gameAdapter = new GameAdapter(this.getContext(), listG);
 
         //Récupération du composant ListView
         ListView list = (ListView) rootView.findViewById(R.id.listGames);
 
         //Initialisation de la liste avec les données
-        list.setAdapter(adapter);
+        list.setAdapter(gameAdapter);
 
         return rootView;
     }
@@ -64,7 +72,7 @@ public class GamesListActivity extends Fragment {
     public class GameAdapter extends BaseAdapter {
         // Une liste de games
         private List<Game> mListG;
-        //Le contexte dans lequel est présent notre adapter
+        //Le contexte dans lequel est présent notre gameAdapter
         private Context mContext;
         //Un mécanisme pour gérer l'affichage graphique depuis un layout XML
         private LayoutInflater mInflater;

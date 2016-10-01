@@ -41,6 +41,10 @@ public class TabActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
+    private GamesListActivity onGoingGamesActivity;
+    private GamesListActivity personalGamesActivity;
+    private GalleryActivity galleryActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,27 +69,6 @@ public class TabActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        //Si il y a des données dans le Intent, alors on revient de CreateGameActivity
-        if (getIntent().getStringExtra(CreateGameActivity.EXTRA_NAME) != null) {
-            createGame(getIntent());
-        }
-
-    }
-
-    private void createGame(Intent intent){
-        Game game = new Game(intent.getStringExtra(CreateGameActivity.EXTRA_NAME),
-                intent.getBooleanExtra(CreateGameActivity.EXTRA_PRIVATE, false),
-                0,
-                intent.getIntExtra(CreateGameActivity.EXTRA_MAX_PLAYERS, -1),
-                new Date(),
-                new Date(new Date().getTime() +
-                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_DAYS, 0) * 24 * 60 * 60 * 1000 +
-                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_HOURS, 0) * 60 * 60 * 1000 +
-                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_MINUTES, 0) * 60 * 1000),
-                intent.getStringExtra(CreateGameActivity.EXTRA_THEME));
-
-        System.out.println(game);
     }
 
     /*
@@ -165,11 +148,14 @@ public class TabActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return GamesListActivity.newInstance(GamesListActivity.TypeList.PERSONNAL);
+                    personalGamesActivity = GamesListActivity.newInstance(GamesListActivity.TypeList.PERSONNAL);
+                    return personalGamesActivity;
                 case 1:
-                    return GamesListActivity.newInstance(GamesListActivity.TypeList.ONGOING);
+                    onGoingGamesActivity = GamesListActivity.newInstance(GamesListActivity.TypeList.ONGOING);
+                    return onGoingGamesActivity;
                 case 2:
-                    return GalleryActivity.newInstance();
+                    galleryActivity = GalleryActivity.newInstance();
+                    return galleryActivity;
             }
             return null;
         }

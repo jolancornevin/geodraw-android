@@ -15,21 +15,16 @@ import com.mobsandgeeks.saripaar.annotation.DecimalMax;
 import com.mobsandgeeks.saripaar.annotation.DecimalMin;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import java.util.Date;
 import java.util.List;
+
+import ot3.insa.fr.geodraw.models.Game;
 
 
 /**
  * A login screen that offers login via email/password.
  */
-public class CreateGameActivity extends AppCompatActivity implements Validator.ValidationListener{
-    public final static String EXTRA_NAME = "name";
-    public final static String EXTRA_PRIVATE = "private";
-    public final static String EXTRA_MAX_PLAYERS = "max_player";
-    public final static String EXTRA_NB_DAYS = "nb_days";
-    public final static String EXTRA_NB_HOURS = "nb_hours";
-    public final static String EXTRA_NB_MINUTES = "nb_minutes";
-    public final static String EXTRA_THEME = "theme";
-
+public class CreateGameActivity extends AppCompatActivity implements Validator.ValidationListener {
     Validator validator;
 
     @NotEmpty
@@ -88,24 +83,18 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
     public void onValidationSucceeded() {
         Intent intent = new Intent(getApplicationContext(), TabActivity.class);
 
-        try {
-            intent.putExtra(EXTRA_NAME, game_name.getText().toString());
+        Game game = new Game(game_name.getText().toString(),
+                isPrivate.isChecked(),
+                0,
+                Integer.parseInt(max_nb_gamers.getText().toString()),
+                new Date(),
+                new Date(new Date().getTime() +
+                        Integer.parseInt(nb_days.getText().toString()) * 24 * 60 * 60 * 1000 +
+                        Integer.parseInt(nb_hours.getText().toString()) * 60 * 60 * 1000 +
+                        Integer.parseInt(nb_minutes.getText().toString()) * 60 * 1000),
+                theme.getText().toString());
 
-            intent.putExtra(EXTRA_PRIVATE, isPrivate.isChecked());
-
-            intent.putExtra(EXTRA_MAX_PLAYERS, Integer.parseInt(max_nb_gamers.getText().toString()));
-
-            intent.putExtra(EXTRA_NB_DAYS, Integer.parseInt(nb_days.getText().toString()));
-
-            intent.putExtra(EXTRA_NB_HOURS, Integer.parseInt(nb_hours.getText().toString()));
-
-            intent.putExtra(EXTRA_NB_MINUTES, Integer.parseInt(nb_minutes.getText().toString()));
-
-            intent.putExtra(EXTRA_THEME, theme.getText().toString());
-
-        } catch (Exception e) {
-
-        }
+        //TODO insert in BD
 
         startActivity(intent);
     }
