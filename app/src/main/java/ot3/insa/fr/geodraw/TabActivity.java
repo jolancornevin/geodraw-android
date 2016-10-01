@@ -66,24 +66,31 @@ public class TabActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        if (intent.getStringExtra(CreateGameActivity.EXTRA_NAME) != null) {
-            Game game = new Game(intent.getStringExtra(CreateGameActivity.EXTRA_NAME),
-                    intent.getBooleanExtra(CreateGameActivity.EXTRA_PRIVATE, false),
-                    0,
-                    intent.getIntExtra(CreateGameActivity.EXTRA_MAX_PLAYERS, -1),
-                    new Date(),
-                    new Date(new Date().getTime() +
-                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_DAYS, 0) * 24 * 60 * 60 * 1000 +
-                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_HOURS, 0) * 60 * 60 * 1000 +
-                            intent.getIntExtra(CreateGameActivity.EXTRA_NB_MINUTES, 0) * 60 * 1000),
-                    intent.getStringExtra(CreateGameActivity.EXTRA_THEME));
-
-            System.out.println(game);
+        //Si il y a des données dans le Intent, alors on revient de CreateGameActivity
+        if (getIntent().getStringExtra(CreateGameActivity.EXTRA_NAME) != null) {
+            createGame(getIntent());
         }
 
     }
 
+    private void createGame(Intent intent){
+        Game game = new Game(intent.getStringExtra(CreateGameActivity.EXTRA_NAME),
+                intent.getBooleanExtra(CreateGameActivity.EXTRA_PRIVATE, false),
+                0,
+                intent.getIntExtra(CreateGameActivity.EXTRA_MAX_PLAYERS, -1),
+                new Date(),
+                new Date(new Date().getTime() +
+                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_DAYS, 0) * 24 * 60 * 60 * 1000 +
+                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_HOURS, 0) * 60 * 60 * 1000 +
+                        intent.getIntExtra(CreateGameActivity.EXTRA_NB_MINUTES, 0) * 60 * 1000),
+                intent.getStringExtra(CreateGameActivity.EXTRA_THEME));
+
+        System.out.println(game);
+    }
+
+    /*
+        Android methods
+     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
