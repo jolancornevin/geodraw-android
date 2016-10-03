@@ -13,10 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ot3.insa.fr.geodraw.models.Game;
+import ot3.insa.fr.geodraw.model.Game;
 
 /**
  * Created by Djowood on 27/09/2016.

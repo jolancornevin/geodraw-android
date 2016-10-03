@@ -15,10 +15,11 @@ import com.mobsandgeeks.saripaar.annotation.DecimalMax;
 import com.mobsandgeeks.saripaar.annotation.DecimalMin;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import ot3.insa.fr.geodraw.models.Game;
+import ot3.insa.fr.geodraw.model.Game;
 
 
 /**
@@ -83,15 +84,21 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
     public void onValidationSucceeded() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-        Game game = new Game(game_name.getText().toString(),
+        Calendar c = Calendar.getInstance();
+
+        Date start = c.getTime();
+        c.add(Calendar.HOUR, Integer.parseInt(nb_hours.getText().toString()) );
+        c.add(Calendar.MINUTE, Integer.parseInt(nb_minutes.getText().toString()) );
+        c.add(Calendar.DAY_OF_YEAR, Integer.parseInt(nb_days.getText().toString()) );
+
+        Date end = c.getTime();
+
+        Game game = new Game(-1, game_name.getText().toString(),
                 isPrivate.isChecked(),
                 0,
                 Integer.parseInt(max_nb_gamers.getText().toString()),
-                new Date(),
-                new Date(new Date().getTime() +
-                        Integer.parseInt(nb_days.getText().toString()) * 24 * 60 * 60 * 1000 +
-                        Integer.parseInt(nb_hours.getText().toString()) * 60 * 60 * 1000 +
-                        Integer.parseInt(nb_minutes.getText().toString()) * 60 * 1000),
+                start,
+                end,
                 theme.getText().toString());
 
         //TODO insert in BD

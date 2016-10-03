@@ -34,6 +34,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ot3.insa.fr.geodraw.communication.Client;
+import ot3.insa.fr.geodraw.communication.message.AddLatLng;
+import ot3.insa.fr.geodraw.communication.message.Message;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
@@ -48,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //User personal settings
     private UserDrawing thisUser;
     private HashMap<String,UserDrawing> drawingList = new HashMap<String,UserDrawing>();
-
+    private Client thisClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -113,12 +117,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-    private void initSelf(){
+    private void initSelf(final String host,final int port){
+        //Init drawing
         thisUser = new UserDrawing(5,Color.GRAY, "ArdaI");
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
                 .color(thisUser.getSelfColor());
         thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
         drawingList.put(thisUser.getNickname(),thisUser);
+
+        //TODO : Make it great again
+        Thread t = new Thread(){
+            public void run(){
+                thisClient = new Client(host,port);
+            }
+        };
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -145,6 +163,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         drawingList.remove(userName);
     }
+
     //UI functions
     public void drawPressed(View view){
         thisUser.setIsDrawing(!thisUser.isDrawing());
@@ -174,7 +193,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        initSelf();
+        initSelf("10.43.9.246",8080);
 
         //Zoom camera
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(mMap.getMaxZoomLevel()-3);
@@ -227,6 +246,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //        lastLocation.getLongitude())));
 
                 //TODO : Sending user location to server
+                thisClient.sendMessage(new AddLatLng(thisUser.getNickname(),
+                        thisUser.getCurrentGame(),
+                        new ot3.insa.fr.geodraw.model.LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()),
+                        thisUser.isDrawing()));
 
             }
         };
@@ -240,12 +263,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
 
     public class UserDrawing{
+
         private String nickname;
         private int selfColor ;
         private int selfWidth;
         private List<Polyline> selfDrawings; //Because more than 1 polyline
         private Polyline selfDrawing; //Current polyline that the user is drawing
         private boolean isDrawing;
+        private int currentGame;
 
         public UserDrawing(int width,int color, String nickname ){
             this.nickname = nickname;
@@ -253,6 +278,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             this.selfWidth = width;
             this.selfDrawings = new ArrayList<>();
             this.isDrawing = true;
+            this.currentGame = -1;
         }
         public int getSelfColor() {
             return selfColor;
@@ -303,6 +329,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return selfDrawings;
         }
 
+        public int getCurrentGame() {
+            return currentGame;
+        }
+
+        public void setCurrentGame(int currentGame) {
+            this.currentGame = currentGame;
+        }
     }
 
     @Override
