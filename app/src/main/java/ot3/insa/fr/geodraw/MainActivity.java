@@ -24,7 +24,7 @@ import java.util.Date;
 
 import ot3.insa.fr.geodraw.models.Game;
 
-public class TabActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide

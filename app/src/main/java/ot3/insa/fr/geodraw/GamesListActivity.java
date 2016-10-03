@@ -1,6 +1,7 @@
 package ot3.insa.fr.geodraw;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -83,18 +84,28 @@ public class GamesListActivity extends Fragment {
             mInflater = LayoutInflater.from(mContext);
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, final ViewGroup parentView) {
             String timeLeft, timeTotal;
             long diff;
 
             LinearLayout layoutItem;
+
             //(1) : Réutilisation des layouts
             if (convertView == null) {
                 //Initialisation de notre item à partir du  layout XML "personne_layout.xml"
-                layoutItem = (LinearLayout) mInflater.inflate(R.layout.item_list_game, parent, false);
+                layoutItem = (LinearLayout) mInflater.inflate(R.layout.item_list_game, parentView, false);
             } else {
                 layoutItem = (LinearLayout) convertView;
             }
+
+            //TODO remplacer par un meilleurs design
+            layoutItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(parentView.getContext(), MapsActivity.class);
+                    startActivity(intent);
+                }
+            });
 
             //(2) : Récupération des TextView de notre layout
             TextView game_name = (TextView) layoutItem.findViewById(R.id.gameName);

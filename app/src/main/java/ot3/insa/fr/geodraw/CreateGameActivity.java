@@ -81,7 +81,7 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
 
     @Override
     public void onValidationSucceeded() {
-        Intent intent = new Intent(getApplicationContext(), TabActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
         Game game = new Game(game_name.getText().toString(),
                 isPrivate.isChecked(),
