@@ -3,11 +3,13 @@ package ot3.insa.fr.geodraw;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -15,7 +17,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ot3.insa.fr.geodraw.model.Game;
 
@@ -74,18 +78,24 @@ public class GamesListActivity extends Fragment {
     public class GameAdapter extends BaseAdapter {
         // Une liste de games
         private List<Game> mListG;
+        // Une liste de games
+        private Map<Integer, LinearLayout> mListLayout;
         //Le contexte dans lequel est présent notre gameAdapter
         private Context mContext;
         //Un mécanisme pour gérer l'affichage graphique depuis un layout XML
         private LayoutInflater mInflater;
+        //Un mécanisme pour gérer l'affichage graphique depuis un layout XML
+        private int _currentSelectedGame = -1;
 
         public GameAdapter(Context context, List<Game> aListG) {
             mContext = context;
             mListG = aListG;
             mInflater = LayoutInflater.from(mContext);
+
+            mListLayout = new HashMap<>();
         }
 
-        public View getView(int position, View convertView, final ViewGroup parentView) {
+        public View getView(final int position, View convertView, final ViewGroup parentView) {
             String timeLeft, timeTotal;
             long diff;
 
@@ -99,12 +109,37 @@ public class GamesListActivity extends Fragment {
                 layoutItem = (LinearLayout) convertView;
             }
 
+            mListLayout.put(position, layoutItem);
+
             //TODO remplacer par un meilleurs design
             layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(parentView.getContext(), MapsActivity.class);
-                    startActivity(intent);
+                    LinearLayout _layoutItem;
+                    FloatingActionButton btn_join, btn_edit, btn_like;
+                    if (_currentSelectedGame != -1) {
+                        _layoutItem = mListLayout.get(_currentSelectedGame);
+
+                        btn_join = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_join);
+                        btn_edit = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_edit);
+                        btn_like = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_like);
+
+                        btn_join.setVisibility(View.GONE);
+                        btn_edit.setVisibility(View.GONE);
+                        btn_like.setVisibility(View.GONE);
+                    }
+
+                    _currentSelectedGame = position;
+
+                    _layoutItem = mListLayout.get(_currentSelectedGame);
+
+                    btn_join = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_join);
+                    btn_edit = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_edit);
+                    btn_like = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_like);
+
+                    btn_join.setVisibility(View.VISIBLE);
+                    btn_edit.setVisibility(View.VISIBLE);
+                    btn_like.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -131,6 +166,22 @@ public class GamesListActivity extends Fragment {
             game_time.setText(timeLeft + " / " + timeTotal);
             game_theme.setText(game.getTheme());
 
+            FloatingActionButton btn_join = (FloatingActionButton)layoutItem.findViewById(R.id.btn_join);
+            FloatingActionButton btn_edit = (FloatingActionButton)layoutItem.findViewById(R.id.btn_edit);
+            FloatingActionButton btn_like = (FloatingActionButton)layoutItem.findViewById(R.id.btn_like);
+
+            btn_join.setImageResource(R.drawable.launch_white_24dp);
+            btn_edit.setImageResource(R.drawable.edit_white_24dp);
+            btn_like.setImageResource(R.drawable.star_white_24dp);
+
+            btn_join.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(parentView.getContext(), MapsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
             //On retourne l'item créé.
             return layoutItem;
         }
@@ -140,6 +191,7 @@ public class GamesListActivity extends Fragment {
         }
 
         public Object getItem(int position) {
+
             return mListG.get(position);
         }
 
