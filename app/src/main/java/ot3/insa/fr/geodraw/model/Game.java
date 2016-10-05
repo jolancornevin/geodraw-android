@@ -64,8 +64,8 @@ public class Game {
         return listGames;
     }
 
-    public static ArrayList<Game> getMockGamesPersonal() {
-        ArrayList<Game> listGames = new ArrayList<>();
+    public static List<Game> getMockGamesPersonal() {
+        List<Game> listGames = new ArrayList<>();
 
         listGames.add(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
                 new Date(2016, 01, 27, 01, 00, 00), "Avion"));
