@@ -9,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +32,7 @@ public class GamesListActivity extends Fragment {
     }
 
     private TypeList typeList;
-    private ArrayList<Game> listG;
+    private ArrayList<Game> listGames;
     private GameAdapter gameAdapter;
 
     public GamesListActivity() {
@@ -50,24 +48,24 @@ public class GamesListActivity extends Fragment {
     }
 
     public void addGameToList(Game game) {
-        listG.add(game);
+        listGames.add(game);
         gameAdapter.notifyDataSetChanged();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.on_going_games, container, false);
+        View rootView = inflater.inflate(R.layout.activity_games_list, container, false);
 
         //Récupération de la liste des personnes
         //TODO à remplacer par les données de la bd
         if (this.typeList == TypeList.ONGOING) {
-            listG = Game.getMockGamesOnGoing();
+            listGames = (ArrayList) Game.getMockGamesOnGoing();
         } else if (this.typeList == TypeList.PERSONNAL) {
-            listG = Game.getMockGamesPersonal();
+            listGames = (ArrayList) Game.getMockGamesPersonal();
         }
 
         //Création et initialisation de l'Adapter pour les personnes
-        gameAdapter = new GameAdapter(this.getContext(), listG);
+        gameAdapter = new GameAdapter(this.getContext(), listGames);
 
         //Récupération du composant ListView
         ListView list = (ListView) rootView.findViewById(R.id.listGames);
@@ -77,7 +75,6 @@ public class GamesListActivity extends Fragment {
 
         return rootView;
     }
-
 
     public class GameAdapter extends BaseAdapter {
         // Une liste de games
