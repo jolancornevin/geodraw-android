@@ -4,6 +4,7 @@ import com.m5c.safesockets.BreakdownObserver;
 import com.m5c.safesockets.SafeSocket;
 
 import java.io.IOException;
+import java.util.List;
 
 import ot3.insa.fr.geodraw.communication.message.AddLatLng;
 import ot3.insa.fr.geodraw.communication.message.GameList;
@@ -23,34 +24,68 @@ public class Client extends Side
 	private final int port;
 	private final String ip;
 
-	public Client(String ip, int port)
+	private List<ClientListener> listeners;
+
+	public static Client theClient;
+
+
+	private boolean isStopped;
+
+	static {
+		theClient = new Client("localhost",8080);
+
+	}
+
+
+	public Client(final String ip, final int port)
 	{
 		super();
 		this.port = port;
 		this.ip = ip;
 
+		this.isStopped = false;
+
 		breakdown.add(new ClientBreak());
-		
-		try {
-			socket = new SafeSocket(ip, port, HEART_BEAT_RATE, TIMEOUT, mess, breakdown);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+
+		Thread t = new Thread() {
+			public void run(){
+				socket = null;
+				while (socket == null && !isStopped)
+					try {
+						socket = new SafeSocket(ip, port, HEART_BEAT_RATE, TIMEOUT, mess, breakdown);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+		};
+		t.start();
+
 
 	}
 	
 
+	public void addListener(ClientListener cl){
+		listeners.add(cl);
+	}
+
+
+	public void removeListener(ClientListener cl) {
+		listeners.remove(cl);
+	}
 
 	public boolean sendMessage(Message m)
 	{
 		String jsonstr = Utils.gson.toJson(m);
+		if(socket == null)
+			System.err.println("Error null socket!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		return socket.sendMessage(jsonstr);
 	}
 	
 	public void disconnect()
 	{
-		socket.disconnect();
+		isStopped = true;
+		if(socket != null)
+			socket.disconnect();
 	}
 	
 	private void reconnect()
@@ -75,14 +110,20 @@ public class Client extends Side
 
 	@Override
 	void HandleTraceMessage(TraceMessage m, SafeSocket sender) {
-		System.out.println(Utils.gson.toJson(m.getTrace()));
-		Utils.gson.toJson(m.getTrace());
+		//System.out.println(Utils.gson.toJson(m.getTrace()));
+		//Utils.gson.toJson(m.getTrace());
+
+		for(ClientListener cl : listeners) {
+			cl.HandleTraceMessage(m, sender);
+		}
 	}
 
 	@Override
 	void HandleGameList(GameList m, SafeSocket sender) {
 		// TODO Auto-generated method stub
-		
+		for(ClientListener cl : listeners) {
+			cl.HandleGameList(m, sender);
+		}
 	}
 
 
@@ -99,7 +140,9 @@ public class Client extends Side
 	@Override
 	void HandleJoinedGame(JoinedGame m, SafeSocket sender) {
 		// TODO Auto-generated method stub
-		
+		for(ClientListener cl : listeners) {
+			cl.HandleJoinedGame(m, sender);
+		}
 	}
 
 	/** Server method*/
@@ -111,7 +154,9 @@ public class Client extends Side
 	@Override
 	void HandleAddLatLng(AddLatLng m, SafeSocket sender) {
 		// TODO Auto-generated method stub
-		
+		for(ClientListener cl : listeners) {
+			cl.HandleAddLatLng(m, sender);
+		}
 	}
 
 
@@ -119,7 +164,9 @@ public class Client extends Side
 	@Override
 	void HandleGameUpdate(GameUpdate m, SafeSocket sender) {
 		// TODO Auto-generated method stub
-		
+		for(ClientListener cl : listeners) {
+			cl.HandleGameUpdate(m, sender);
+		}
 	}
 
 
@@ -127,7 +174,9 @@ public class Client extends Side
 	@Override
 	void HandleVote(Vote m, SafeSocket sender) {
 		// TODO Auto-generated method stub
-		
+		for(ClientListener cl : listeners) {
+			cl.HandleVote(m, sender);
+		}
 	}
 
 

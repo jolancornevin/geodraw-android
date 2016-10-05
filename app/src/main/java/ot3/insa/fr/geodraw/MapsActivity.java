@@ -13,11 +13,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.ads.MobileAds;
+
 import android.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
@@ -26,17 +23,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.m5c.safesockets.SafeSocket;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import ot3.insa.fr.geodraw.communication.Client;
+import ot3.insa.fr.geodraw.communication.ClientListener;
 import ot3.insa.fr.geodraw.communication.message.AddLatLng;
-import ot3.insa.fr.geodraw.communication.message.Message;
+import ot3.insa.fr.geodraw.communication.message.GameList;
+import ot3.insa.fr.geodraw.communication.message.GameUpdate;
+import ot3.insa.fr.geodraw.communication.message.JoinedGame;
+import ot3.insa.fr.geodraw.communication.message.TraceMessage;
+import ot3.insa.fr.geodraw.communication.message.Vote;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -52,7 +55,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //User personal settings
     private UserDrawing thisUser;
     private HashMap<String,UserDrawing> drawingList = new HashMap<String,UserDrawing>();
-    private Client thisClient;
+    private ClientListener thisClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -117,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-    private void initSelf(final String host,final int port){
+    private void initSelf(){
         //Init drawing
         thisUser = new UserDrawing(5,Color.GRAY, "ArdaI");
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
@@ -126,18 +130,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         drawingList.put(thisUser.getNickname(),thisUser);
 
         //TODO : Make it great again
-        Thread t = new Thread(){
-            public void run(){
-                thisClient = new Client(host,port);
+        thisClient = new ClientListener() {
+
+            void HandleTraceMessage(TraceMessage m, SafeSocket sender) {
+
+            }
+
+
+            void HandleAddLatLng(AddLatLng m, SafeSocket sender) {
+                // TODO Auto-generated method stub
+
+            }
+
+
+
+            void HandleGameUpdate(GameUpdate m, SafeSocket sender) {
+                // TODO Auto-generated method stub
+
+            }
+
+            void HandleVote(Vote m, SafeSocket sender) {
+                // TODO Auto-generated method stub
+
             }
         };
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     //Multiplayer user functions
@@ -163,7 +190,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         drawingList.remove(userName);
     }
-
     //UI functions
     public void drawPressed(View view){
         thisUser.setIsDrawing(!thisUser.isDrawing());
@@ -193,7 +219,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        initSelf("10.43.9.246",8080);
+
+        //IP and port of the server goes here
+        initSelf();
 
         //Zoom camera
         CameraUpdate zoom=CameraUpdateFactory.zoomTo(mMap.getMaxZoomLevel()-3);
@@ -246,7 +274,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //        lastLocation.getLongitude())));
 
                 //TODO : Sending user location to server
-                thisClient.sendMessage(new AddLatLng(thisUser.getNickname(),
+                Client.theClient.sendMessage(new AddLatLng(thisUser.getNickname(),
                         thisUser.getCurrentGame(),
                         new ot3.insa.fr.geodraw.model.LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()),
                         thisUser.isDrawing()));
@@ -255,8 +283,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
         getInitLocation();
 
+        // Start to listen server for coordonate updates of other players
+
     }
-    //TODO : Getting other user information from servers and drawing
 
     /**
      * To remove a user from the map (its line), simply do line.remove
@@ -270,7 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         private List<Polyline> selfDrawings; //Because more than 1 polyline
         private Polyline selfDrawing; //Current polyline that the user is drawing
         private boolean isDrawing;
-        private int currentGame;
+        private int currentGameID;
 
         public UserDrawing(int width,int color, String nickname ){
             this.nickname = nickname;
@@ -278,7 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             this.selfWidth = width;
             this.selfDrawings = new ArrayList<>();
             this.isDrawing = true;
-            this.currentGame = -1;
+            this.currentGameID = -1;
         }
         public int getSelfColor() {
             return selfColor;
@@ -330,11 +359,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         public int getCurrentGame() {
-            return currentGame;
+            return currentGameID;
         }
 
-        public void setCurrentGame(int currentGame) {
-            this.currentGame = currentGame;
+        public void setCurrentGame(int currentGameID) {
+            this.currentGameID = currentGameID;
         }
     }
 
