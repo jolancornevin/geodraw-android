@@ -49,7 +49,7 @@ public class Game {
         return lock;
     }
 
-    public static ArrayList<Game> getMockGames() {
+    public static ArrayList<Game> getMockGamesOnGoing() {
         ArrayList<Game> listGames = new ArrayList<>();
 
         listGames.add(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
@@ -60,6 +60,17 @@ public class Game {
                 new Date(2016, 01, 27, 24, 00, 00), ""));
         listGames.add(new Game(3,"Partie 4", true, 8, 20, new Date(2016, 01, 27, 5, 32, 00),
                 new Date(2016, 01, 27, 24, 00, 00), "Guerre"));
+
+        return listGames;
+    }
+
+    public static ArrayList<Game> getMockGamesPersonal() {
+        ArrayList<Game> listGames = new ArrayList<>();
+
+        listGames.add(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
+                new Date(2016, 01, 27, 01, 00, 00), "Avion"));
+        listGames.add(new Game(1,"Partie 2", false, 5, 5, new Date(2016, 01, 27, 5, 32, 00),
+                new Date(2016, 01, 27, 24, 00, 00), "Voiture"));
 
         return listGames;
     }
