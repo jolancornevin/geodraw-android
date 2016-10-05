@@ -15,7 +15,7 @@ public class Gallery {
     private final int id;
     private final String name;
     private final String theme;
-    private final int like;
+    private final Integer like;
 
     /*
     Constructor
@@ -57,7 +57,7 @@ public class Gallery {
         return theme;
     }
 
-    public int getLike() {
+    public Integer getLike() {
         return like;
     }
 }

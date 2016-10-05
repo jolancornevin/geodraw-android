@@ -16,7 +16,7 @@ public class Game {
     private final int id;
     private final String name;
     private final boolean lock;
-    private final int maxNbPlayer;
+    private final Integer maxNbPlayer;
     private final Date startDate;
     private final Date endDate;
     private final String theme;
@@ -113,7 +113,7 @@ public class Game {
     	}
     }
 
-    public int getMaxNbPlayer() {
+    public Integer getMaxNbPlayer() {
         return maxNbPlayer;
     }
 

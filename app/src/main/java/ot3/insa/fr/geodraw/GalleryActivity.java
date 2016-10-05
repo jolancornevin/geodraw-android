@@ -2,6 +2,7 @@ package ot3.insa.fr.geodraw;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,12 +82,19 @@ public class GalleryActivity extends Fragment {
             }
 
             //(2) : Récupération des TextView de notre layout
-            TextView game_name = (TextView) layoutItem.findViewById(R.id.galleryName);
+            TextView gallery_name = (TextView) layoutItem.findViewById(R.id.gallery_name);
+            TextView gallery_theme = (TextView) layoutItem.findViewById(R.id.gallery_theme);
+            TextView gallery_like = (TextView) layoutItem.findViewById(R.id.gallery_like);
 
             //(3) : Renseignement des valeurs
             Gallery gallery = mListGallery.get(position);
 
-            game_name.setText(gallery.getName());
+            gallery_name.setText(gallery.getName());
+            gallery_theme.setText(gallery.getTheme());
+            gallery_like.setText(gallery.getLike().toString());
+
+            FloatingActionButton btn_like = (FloatingActionButton) layoutItem.findViewById(R.id.btn_gallery_like);
+            btn_like.setImageResource(R.drawable.thumb_up_white_24dp);
 
             //On retourne l'item créé.
             return layoutItem;
