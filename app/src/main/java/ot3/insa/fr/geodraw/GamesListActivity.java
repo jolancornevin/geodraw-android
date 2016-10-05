@@ -60,7 +60,11 @@ public class GamesListActivity extends Fragment {
 
         //Récupération de la liste des personnes
         //TODO à remplacer par les données de la bd
-        listG = Game.getMockGames();
+        if (this.typeList == TypeList.ONGOING) {
+            listG = Game.getMockGamesOnGoing();
+        } else if (this.typeList == TypeList.PERSONNAL) {
+            listG = Game.getMockGamesPersonal();
+        }
 
         //Création et initialisation de l'Adapter pour les personnes
         gameAdapter = new GameAdapter(this.getContext(), listG);
@@ -120,9 +124,9 @@ public class GamesListActivity extends Fragment {
                     if (_currentSelectedGame != -1) {
                         _layoutItem = mListLayout.get(_currentSelectedGame);
 
-                        btn_join = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_join);
-                        btn_edit = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_edit);
-                        btn_like = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_like);
+                        btn_join = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_join);
+                        btn_edit = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_edit);
+                        btn_like = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_like);
 
                         btn_join.setVisibility(View.GONE);
                         btn_edit.setVisibility(View.GONE);
@@ -133,9 +137,9 @@ public class GamesListActivity extends Fragment {
 
                     _layoutItem = mListLayout.get(_currentSelectedGame);
 
-                    btn_join = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_join);
-                    btn_edit = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_edit);
-                    btn_like = (FloatingActionButton)_layoutItem.findViewById(R.id.btn_like);
+                    btn_join = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_join);
+                    btn_edit = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_edit);
+                    btn_like = (FloatingActionButton) _layoutItem.findViewById(R.id.btn_like);
 
                     btn_join.setVisibility(View.VISIBLE);
                     btn_edit.setVisibility(View.VISIBLE);
@@ -166,9 +170,9 @@ public class GamesListActivity extends Fragment {
             game_time.setText(timeLeft + " / " + timeTotal);
             game_theme.setText(game.getTheme());
 
-            FloatingActionButton btn_join = (FloatingActionButton)layoutItem.findViewById(R.id.btn_join);
-            FloatingActionButton btn_edit = (FloatingActionButton)layoutItem.findViewById(R.id.btn_edit);
-            FloatingActionButton btn_like = (FloatingActionButton)layoutItem.findViewById(R.id.btn_like);
+            FloatingActionButton btn_join = (FloatingActionButton) layoutItem.findViewById(R.id.btn_join);
+            FloatingActionButton btn_edit = (FloatingActionButton) layoutItem.findViewById(R.id.btn_edit);
+            FloatingActionButton btn_like = (FloatingActionButton) layoutItem.findViewById(R.id.btn_like);
 
             btn_join.setImageResource(R.drawable.launch_white_24dp);
             btn_edit.setImageResource(R.drawable.edit_white_24dp);
