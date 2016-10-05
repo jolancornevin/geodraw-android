@@ -42,7 +42,6 @@ public abstract class ClientListener {
     }
 
 
-
     void HandleGameUpdate(GameUpdate m, SafeSocket sender) {
         // TODO Auto-generated method stub
 
