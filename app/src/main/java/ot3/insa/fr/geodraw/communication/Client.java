@@ -80,6 +80,8 @@ public class Client extends Side
 						if(socket != null)
 							if(socket.sendMessage(msg))
 								sent = true;
+							else
+								Thread.sleep(500);
 					}
 				}
 			}
