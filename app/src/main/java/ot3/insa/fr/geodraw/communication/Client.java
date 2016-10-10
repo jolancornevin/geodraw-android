@@ -37,7 +37,6 @@ public class Client extends Side
 
 	static {
 		theClient = new Client("localhost",8080);
-
 	}
 
 
@@ -59,7 +58,7 @@ public class Client extends Side
 			
 			@Override
 			public void run() {
-				String msg;
+				String msg = "";
 				boolean sent = true;
 				
 				while(!isStopped){
@@ -69,10 +68,14 @@ public class Client extends Side
 						msg = messagePool.poll();
 					}
 					
-					if(msg == null)
+					if(msg == "")
 					{
 						sent = true;
-						Thread.sleep(500);
+						try {
+							Thread.currentThread().wait(500);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 						continue;
 					}
 					
@@ -81,7 +84,14 @@ public class Client extends Side
 							if(socket.sendMessage(msg))
 								sent = true;
 							else
-								Thread.sleep(500);
+								try {
+									Thread.currentThread().wait(500);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+					}
+					catch(Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}

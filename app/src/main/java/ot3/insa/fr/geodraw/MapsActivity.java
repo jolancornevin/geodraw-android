@@ -16,6 +16,8 @@ import android.view.View;
 
 
 import android.location.LocationListener;
+import android.widget.Button;
+
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -159,7 +161,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             void HandleAddLatLng(AddLatLng m, SafeSocket sender) {
-                // TODO Auto-generated method stub
+
+                if(m.getGameID() != thisUser.getCurrentGame()) {
+                    return;
+                }
                 String username = m.getUserID();
                 UserDrawing usr = drawingList.get(username);
                 Polyline currentSegment = usr.getSelfDrawing();
@@ -173,7 +178,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 LatLng ltln = new LatLng(m.getLatLng().getLat(),m.getLatLng().getLng());
                 updateUserDrawing(username, ltln);
-
             }
 
 
@@ -239,15 +243,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     //UI functions
     public void drawPressed(View view){
+
+        String buttonText="RESUME DRAWING";
         thisUser.setIsDrawing(!thisUser.isDrawing());
         if(thisUser.isDrawing()){
             PolylineOptions lineOptions = new PolylineOptions()
                     .width(thisUser.getSelfWidth())
                     .add(new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()))
                     .color(thisUser.getSelfColor());
-
+            buttonText="PAUSE DRAWING";
             thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
         }
+        Button b = (Button)view;
+        b.setText(buttonText);
         //TODO : Send new status to server
     }
     public void hidePressed(View view){
