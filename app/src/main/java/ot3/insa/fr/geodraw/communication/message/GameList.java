@@ -2,20 +2,20 @@ package ot3.insa.fr.geodraw.communication.message;
 
 import java.util.Collection;
 
-import ot3.insa.fr.geodraw.model.Game;
+import ot3.insa.fr.geodraw.model.GameInfo;
 
 public class GameList extends Message {
 
-	private final Collection<Game> games;
+	private final List<GameInfo> games;
 	
 
-	public GameList(Collection<Game> games) 
+	public GameList(List<GameInfo> games) 
 	{
 		super(Type.GAMELIST);
 		this.games = games;
 	}
 
-	public Collection<Game> getGames() {
+	public List<GameInfo> getGames() {
 		return games;
 	}
 }

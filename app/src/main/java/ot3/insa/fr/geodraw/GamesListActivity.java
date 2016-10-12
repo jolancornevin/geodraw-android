@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import ot3.insa.fr.geodraw.model.Game;
+import ot3.insa.fr.geodraw.model.GameInfo;
+
 
 /**
  * Created by Djowood on 27/09/2016.
@@ -32,7 +34,7 @@ public class GamesListActivity extends Fragment {
     }
 
     private TypeList typeList;
-    private ArrayList<Game> listGames;
+    private ArrayList<GameInfo> listGames;
     private GameAdapter gameAdapter;
 
     public GamesListActivity() {
@@ -47,7 +49,7 @@ public class GamesListActivity extends Fragment {
         return new GamesListActivity(t);
     }
 
-    public void addGameToList(Game game) {
+    public void addGameToList(GameInfo game) {
         listGames.add(game);
         gameAdapter.notifyDataSetChanged();
     }
@@ -78,7 +80,7 @@ public class GamesListActivity extends Fragment {
 
     public class GameAdapter extends BaseAdapter {
         // Une liste de games
-        private List<Game> mListG;
+        private List<GameInfo> mListG;
         // Une liste de games
         private Map<Integer, LinearLayout> mListLayout;
         //Le contexte dans lequel est présent notre gameAdapter
@@ -88,7 +90,7 @@ public class GamesListActivity extends Fragment {
         //Un mécanisme pour gérer l'affichage graphique depuis un layout XML
         private int _currentSelectedGame = -1;
 
-        public GameAdapter(Context context, List<Game> aListG) {
+        public GameAdapter(Context context, List<GameInfo> aListG) {
             mContext = context;
             mListG = aListG;
             mInflater = LayoutInflater.from(mContext);
@@ -98,7 +100,6 @@ public class GamesListActivity extends Fragment {
 
         public View getView(final int position, View convertView, final ViewGroup parentView) {
             String timeLeft, timeTotal;
-            long diff;
 
             LinearLayout layoutItem;
 
@@ -151,19 +152,13 @@ public class GamesListActivity extends Fragment {
             TextView game_theme = (TextView) layoutItem.findViewById(R.id.gameTheme);
 
             //(3) : Renseignement des valeurs
-            Game game = mListG.get(position);
+            GameInfo game = mListG.get(position);
             game_name.setText(game.getName());
             game_nb_players.setText(game.getCurrentNbPlayer() + " / " + game.getMaxNbPlayer());
 
-            diff = Math.abs(game.getEndDate().getTime() - game.getStartDate().getTime());
             //TODO
-            timeTotal = ((diff > (24 * 60 * 60 * 1000)) ? diff % (24 * 60 * 60 * 1000) : 00) + ":" +
-                    ((diff > (60 * 60 * 1000)) ? diff % (60 * 60 * 1000) : 00) + ":" +
-                    (diff % (60 * 1000) % 60);
-            diff = Math.abs(game.getEndDate().getTime() - new Date().getTime());
-            timeLeft = ((diff > (24 * 60 * 60 * 1000)) ? diff % (24 * 60 * 60 * 1000) : 00) + ":" +
-                    ((diff > (60 * 60 * 1000)) ? diff % (60 * 60 * 1000) : 00) + ":" +
-                    (diff % (60 * 1000) % 60);
+            timeTotal = game.getMaxHours() + "h " + game.getMaxMinutes() + "m";
+            timeLeft = game.getRemainingHours() + "h " + game.getRemainingMinutes() + "m";
             game_time.setText(timeLeft + " / " + timeTotal);
             game_theme.setText(game.getTheme());
 
