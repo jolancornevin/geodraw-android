@@ -57,14 +57,14 @@ public class Game {
     public static ArrayList<GameInfo> getMockGamesOnGoing() {
 		ArrayList<GameInfo> listGameInfo = new ArrayList<>();
 
-        listGameInfo.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
-                new Date(2016, 01, 27, 01, 00, 00), "Avion")));
-        listGameInfo.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Voiture")));
-        listGameInfo.add(new GameInfo(new Game(2,"Partie 3", true, 5, 10, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), ""));
-        listGameInfo.add(new GameInfo(new Game(3,"Partie 4", true, 8, 20, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Guerre")));
+        listGameInfo.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, 5,
+                5, "Avion")));
+        listGameInfo.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, 42,
+                7, "Voiture")));
+        listGameInfo.add(new GameInfo(new Game(2,"Partie 3", true, 5, 10, 3,
+                24, ""));
+        listGameInfo.add(new GameInfo(new Game(3,"Partie 4", true, 8, 20, 0,
+                5, "Guerre")));
 
         return listGames;
     }
@@ -72,10 +72,10 @@ public class Game {
     public static List<GameInfo> getMockGamesPersonal() {
         List<GameInfo> listGames = new ArrayList<>();
 
-        listGames.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
-                new Date(2016, 01, 27, 01, 00, 00), "Avion")));
-        listGames.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Voiture")));
+        listGames.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, 1,
+                0, "Avion")));
+        listGames.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, 0,
+                20, "Voiture")));
 
         return listGames;
     }
