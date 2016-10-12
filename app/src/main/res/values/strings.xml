@@ -25,4 +25,5 @@
     <string name="create_game">Create game</string>
     <string name="title_activity_tabe_testactivity">TabeTestactivity</string>
     <string name="ongoing_games">On going games</string>
+    <string name="google_maps_key_static">AIzaSyClLolwFn535RX3KipZ4PHTc9Jtv3xS0vI</string>
 </resources>

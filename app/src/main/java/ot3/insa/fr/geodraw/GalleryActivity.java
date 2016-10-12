@@ -97,13 +97,28 @@ public class GalleryActivity extends Fragment {
                 layoutItem = (LinearLayout) convertView;
             }
 
+            Gallery gallery = mListGallery.get(position);
+
+            Point size = getScreenSize();
+            int width = size.x;
+
+            /*String url = "https://maps.googleapis.com/maps/api/staticmap?" +
+                    "size=" + width + "x300" +
+                    "&scale=1" +
+                    "&path=color:red|weight:5|45.777460,4.845140|45.772430,4.855100|45.785600,4.858020|45.777460,4.845140" +
+                    "&path=color:blue|weight:5|45.774800,4.849990|45.778030,4.855570|45.780180,4.849690|45.774800,4.849990" +
+                    "&key=" + getResources().getString(R.string.google_maps_key_static);*/
+
+            ImageView imageView = (ImageView) layoutItem.findViewById(R.id.mapImageView);
+            ImageLoader imageLoader = new ImageLoader(mContext, (short) width, (short) 300);
+            imageLoader.DisplayImage(constructGoogleMapStaticUrl(width, gallery), imageView);
+
             //(2) : Récupération des TextView de notre layout
             TextView gallery_name = (TextView) layoutItem.findViewById(R.id.gallery_name);
             TextView gallery_theme = (TextView) layoutItem.findViewById(R.id.gallery_theme);
             TextView gallery_like = (TextView) layoutItem.findViewById(R.id.gallery_like);
 
             //(3) : Renseignement des valeurs
-            Gallery gallery = mListGallery.get(position);
 
             gallery_name.setText(gallery.getName());
             gallery_theme.setText(gallery.getTheme());
@@ -114,6 +129,37 @@ public class GalleryActivity extends Fragment {
 
             //On retourne l'item créé.
             return layoutItem;
+        }
+
+        @NonNull
+        String constructGoogleMapStaticUrl(int width, Gallery gallery) {
+            String url = "https://maps.googleapis.com/maps/api/staticmap?" +
+                    "size=" + width + "x300";
+
+            for (Map.Entry<String, Drawing> entry : gallery.getTraces().entrySet()) {
+                Drawing drawing = entry.getValue();
+
+                //TODO changer les couleurs pour chaque drawing
+                String couleur = "bleu";
+
+                //On parcours tous les segment pour les ajouté
+                for (Segment segment : drawing.getSegments()) {
+                    url += "&path=color:" + couleur + "|weight:5|enc:";
+                    url += ot3.insa.fr.geodraw.utils.Utils.encode(segment.getGoogleMapSegment());
+                }
+            }
+
+            url += "&key=" + getResources().getString(R.string.google_maps_key_static);
+            return url;
+        }
+
+        @NonNull
+        private Point getScreenSize() {
+            WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getRealSize(size);
+            return size;
         }
 
         public int getCount() {
@@ -127,6 +173,14 @@ public class GalleryActivity extends Fragment {
 
         public long getItemId(int position) {
             return position;
+        }
+
+        @Override
+        public void onMapReady(GoogleMap map) {
+            // Add a marker in Sydney, Australia, and move the camera.
+            LatLng sydney = new LatLng(-34, 151);
+            map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+            map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
     }
 }
