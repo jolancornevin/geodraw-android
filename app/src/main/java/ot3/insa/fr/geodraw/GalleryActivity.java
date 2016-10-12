@@ -1,21 +1,37 @@
 package ot3.insa.fr.geodraw;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import ot3.insa.fr.geodraw.model.Drawing;
 import ot3.insa.fr.geodraw.model.Gallery;
+import ot3.insa.fr.geodraw.model.Segment;
+import ot3.insa.fr.geodraw.utils.lazylist.ImageLoader;
+import ot3.insa.fr.geodraw.utils.lazylist.Utils;
 
 /**
  * Created by Djowood on 27/09/2016.
@@ -56,7 +72,7 @@ public class GalleryActivity extends Fragment {
     }
 
 
-    public class GalleryAdapter extends BaseAdapter {
+    public class GalleryAdapter extends BaseAdapter implements OnMapReadyCallback {
         // Une liste de games
         private List<Gallery> mListGallery;
         //Le contexte dans lequel est présent notre gameAdapter

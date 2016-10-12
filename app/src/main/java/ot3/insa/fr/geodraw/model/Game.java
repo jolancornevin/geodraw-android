@@ -42,8 +42,8 @@ public class Game {
 		
         this.id = id;
         
-        players = new HashMap<String, Integer>();
-        traces = new HashMap<String, Drawing>();
+        players = new HashMap<>();
+        traces = new HashMap<>();
     }
 
     public int getId() {
