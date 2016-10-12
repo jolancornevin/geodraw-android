@@ -15,10 +15,13 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.graphics.Point;
 import android.os.Handler;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import ot3.insa.fr.geodraw.R;
@@ -33,12 +36,20 @@ public class ImageLoader {
     ExecutorService executorService;
     Handler handler = new Handler();//handler to display images in UI thread
 
+    private short required_width, requiredHeight;
+
     public ImageLoader(Context context) {
         fileCache = new FileCache(context);
         executorService = Executors.newFixedThreadPool(5);
     }
 
-    final int stub_id = R.drawable.stub;
+    public ImageLoader(Context context, short width, short height) {
+        fileCache = new FileCache(context);
+        executorService = Executors.newFixedThreadPool(5);
+
+        required_width = width;
+        requiredHeight = height;
+    }
 
     public void DisplayImage(String url, ImageView imageView) {
         imageViews.put(imageView, url);
@@ -47,7 +58,6 @@ public class ImageLoader {
             imageView.setImageBitmap(bitmap);
         else {
             queuePhoto(url, imageView);
-            imageView.setImageResource(stub_id);
         }
     }
 
@@ -91,18 +101,20 @@ public class ImageLoader {
     private Bitmap decodeFile(File f) {
         try {
             //decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+
             FileInputStream stream1 = new FileInputStream(f);
-            BitmapFactory.decodeStream(stream1, null, o);
+            BitmapFactory.decodeStream(stream1, null, options);
             stream1.close();
 
-            //Find the correct scale value. It should be the power of 2.
-            final int REQUIRED_SIZE = 70;
-            int width_tmp = o.outWidth, height_tmp = o.outHeight;
+            final int REQUIRED_WIDTH = required_width;
+            final int REQUIRED_HEIGHT = requiredHeight;
+
+            int width_tmp = options.outWidth, height_tmp = options.outHeight;
             int scale = 1;
             while (true) {
-                if (width_tmp / 2 < REQUIRED_SIZE || height_tmp / 2 < REQUIRED_SIZE)
+                if (width_tmp / 2 < REQUIRED_WIDTH || height_tmp / 2 < REQUIRED_HEIGHT)
                     break;
                 width_tmp /= 2;
                 height_tmp /= 2;
@@ -112,6 +124,11 @@ public class ImageLoader {
             //decode with inSampleSize
             BitmapFactory.Options o2 = new BitmapFactory.Options();
             o2.inSampleSize = scale;
+            o2.inJustDecodeBounds = false;
+            o2.inDither = false;
+            o2.inScaled = false;
+            o2.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
             FileInputStream stream2 = new FileInputStream(f);
             Bitmap bitmap = BitmapFactory.decodeStream(stream2, null, o2);
             stream2.close();
@@ -146,8 +163,10 @@ public class ImageLoader {
             try {
                 if (imageViewReused(photoToLoad))
                     return;
+
                 Bitmap bmp = getBitmap(photoToLoad.url);
                 memoryCache.put(photoToLoad.url, bmp);
+
                 if (imageViewReused(photoToLoad))
                     return;
                 BitmapDisplayer bd = new BitmapDisplayer(bmp, photoToLoad);
@@ -180,8 +199,6 @@ public class ImageLoader {
                 return;
             if (bitmap != null)
                 photoToLoad.imageView.setImageBitmap(bitmap);
-            else
-                photoToLoad.imageView.setImageResource(stub_id);
         }
     }
 
