@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/my_account"
+            android:icon="@drawable/my_account_black_24dp"
+            android:title="Mon Compte" />
+        <item
+            android:id="@+id/my_friends"
+            android:icon="@drawable/my_firends_black_24dp"
+            android:title="Mes Amis" />
+        <item
+            android:id="@+id/chat"
+            android:icon="@drawable/chat_black_24dp"
+            android:title="Discuter" />
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/settings_black_24dp"
+            android:title="Paramètres" />
+    </group>
+
+</menu>
