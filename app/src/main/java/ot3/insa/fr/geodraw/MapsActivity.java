@@ -133,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void initSelf(){
         //Init drawing
         //TODO : Select color randomly
-        thisUser = new UserDrawing(5,Color.GREEN, "ArdaI");
+        thisUser = new UserDrawing(5,Color.GREEN, "Ard");
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
                 .color(thisUser.getSelfColor());
         thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
@@ -198,7 +198,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
 
-
+            // Get new coordinates of other users and add them
             void HandleAddLatLng(AddLatLng m, SafeSocket sender) {
 
                 if(m.getGameID() != thisUser.getCurrentGame()) {
@@ -317,12 +317,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String buttonText="RESUME DRAWING";
         thisUser.setIsDrawing(!thisUser.isDrawing());
         if(thisUser.isDrawing()){
-            PolylineOptions lineOptions = new PolylineOptions()
-                    .width(thisUser.getSelfWidth())
-                    .add(new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()))
-                    .color(thisUser.getSelfColor());
+            PolylineOptions lineOptions;
+            try{
+                lineOptions = new PolylineOptions()
+                        .width(thisUser.getSelfWidth())
+                        .add(new LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()))
+                        .color(thisUser.getSelfColor());
+                thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
+            } catch(Exception e) {
+
+            }
+
             buttonText="PAUSE DRAWING";
-            thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
         }
         Button b = (Button)view;
         b.setText(buttonText);
@@ -338,7 +344,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(locEnable);
         }
 
-        //TODO : Send new status to server
     }
 
     @Override
@@ -404,7 +409,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         thisUser.getCurrentGame(),
                         new ot3.insa.fr.geodraw.model.LatLng(lastLocation.getLatitude(),lastLocation.getLongitude()),
                         thisUser.isDrawing()));
-
             }
         };
         getInitLocation();
