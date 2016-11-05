@@ -1,6 +1,7 @@
 package ot3.insa.fr.geodraw.communication.message;
 
 import java.util.Collection;
+import java.util.List;
 
 import ot3.insa.fr.geodraw.model.GameInfo;
 

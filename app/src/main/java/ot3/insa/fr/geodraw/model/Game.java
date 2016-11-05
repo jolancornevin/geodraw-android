@@ -1,6 +1,7 @@
 package ot3.insa.fr.geodraw.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -34,11 +35,11 @@ public class Game {
         this.theme = theme;
         
 		Calendar c = Calendar.getInstance();
-		startDate = Calendar.getTime();
+		startDate = c.getTime();
 		
 		c.add(Calendar.HOUR, hours);
 		c.add(Calendar.MINUTE, minutes);
-		
+		endDate = c.getTime();
 		
         this.id = id;
         
@@ -62,11 +63,11 @@ public class Game {
         listGameInfo.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, 42,
                 7, "Voiture")));
         listGameInfo.add(new GameInfo(new Game(2,"Partie 3", true, 5, 10, 3,
-                24, ""));
+                24, "")));
         listGameInfo.add(new GameInfo(new Game(3,"Partie 4", true, 8, 20, 0,
                 5, "Guerre")));
 
-        return listGames;
+        return listGameInfo;
     }
 
     public static List<GameInfo> getMockGamesPersonal() {
