@@ -4,7 +4,6 @@
     <string name="actual_games">In progress</string>
     <string name="gallery">Gallery</string>
     <string name="title_activity_tabs">TabsActivity</string>
-    <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_tab">GeoDraw</string>
     <string name="title_activity_maps">ActivityMapActivity</string>
@@ -26,4 +25,6 @@
     <string name="title_activity_tabe_testactivity">TabeTestactivity</string>
     <string name="ongoing_games">On going games</string>
     <string name="google_maps_key_static">AIzaSyClLolwFn535RX3KipZ4PHTc9Jtv3xS0vI</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>
