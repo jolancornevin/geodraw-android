@@ -1,6 +1,7 @@
 package ot3.insa.fr.geodraw.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ public class Game {
     private final int id;
     private final String name;
     private final boolean lock;
-    private final int maxNbPlayer;
+    private final Integer maxNbPlayer;
     private final Date startDate;
     private final Date endDate;
     private final String theme;
@@ -26,19 +27,24 @@ public class Game {
     
     private int currentNbPlayer;
 
-    public Game(int id, String name, Boolean lock, int currentNbPlayer, int maxNbPlayer, Date startDate, Date endDate, String theme) {
+    public Game(int id, String name, Boolean lock, int currentNbPlayer, int maxNbPlayer, int hours, int minutes, String theme) {
         this.name = name;
         this.lock = lock;
         this.currentNbPlayer = currentNbPlayer;
         this.maxNbPlayer = maxNbPlayer;
-        this.startDate = startDate;
-        this.endDate = endDate;
         this.theme = theme;
         
+		Calendar c = Calendar.getInstance();
+		startDate = c.getTime();
+		
+		c.add(Calendar.HOUR, hours);
+		c.add(Calendar.MINUTE, minutes);
+		endDate = c.getTime();
+		
         this.id = id;
         
-        players = new HashMap<String, Integer>();
-        traces = new HashMap<String, Drawing>();
+        players = new HashMap<>();
+        traces = new HashMap<>();
     }
 
     public int getId() {
@@ -49,28 +55,28 @@ public class Game {
         return lock;
     }
 
-    public static ArrayList<Game> getMockGamesOnGoing() {
-        ArrayList<Game> listGames = new ArrayList<>();
+    public static ArrayList<GameInfo> getMockGamesOnGoing() {
+		ArrayList<GameInfo> listGameInfo = new ArrayList<>();
 
-        listGames.add(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
-                new Date(2016, 01, 27, 01, 00, 00), "Avion"));
-        listGames.add(new Game(1,"Partie 2", false, 5, 5, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Voiture"));
-        listGames.add(new Game(2,"Partie 3", true, 5, 10, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), ""));
-        listGames.add(new Game(3,"Partie 4", true, 8, 20, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Guerre"));
+        listGameInfo.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, 5,
+                5, "Avion")));
+        listGameInfo.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, 42,
+                7, "Voiture")));
+        listGameInfo.add(new GameInfo(new Game(2,"Partie 3", true, 5, 10, 3,
+                24, "")));
+        listGameInfo.add(new GameInfo(new Game(3,"Partie 4", true, 8, 20, 0,
+                5, "Guerre")));
 
-        return listGames;
+        return listGameInfo;
     }
 
-    public static List<Game> getMockGamesPersonal() {
-        List<Game> listGames = new ArrayList<>();
+    public static List<GameInfo> getMockGamesPersonal() {
+        List<GameInfo> listGames = new ArrayList<>();
 
-        listGames.add(new Game(0,"Partie 1", false, 10, 20, new Date(2016, 01, 27, 00, 18, 00),
-                new Date(2016, 01, 27, 01, 00, 00), "Avion"));
-        listGames.add(new Game(1,"Partie 2", false, 5, 5, new Date(2016, 01, 27, 5, 32, 00),
-                new Date(2016, 01, 27, 24, 00, 00), "Voiture"));
+        listGames.add(new GameInfo(new Game(0,"Partie 1", false, 10, 20, 1,
+                0, "Avion")));
+        listGames.add(new GameInfo(new Game(1,"Partie 2", false, 5, 5, 0,
+                20, "Voiture")));
 
         return listGames;
     }
@@ -108,7 +114,7 @@ public class Game {
     	}
     }
 
-    public int getMaxNbPlayer() {
+    public Integer getMaxNbPlayer() {
         return maxNbPlayer;
     }
 

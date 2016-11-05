@@ -97,8 +97,8 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
                 isPrivate.isChecked(),
                 0,
                 Integer.parseInt(max_nb_gamers.getText().toString()),
-                start,
-                end,
+                Integer.parseInt(nb_hours.getText().toString())+Integer.parseInt(nb_days.getText().toString())*24,
+                Integer.parseInt(nb_minutes.getText().toString()),
                 theme.getText().toString());
 
         //TODO insert in BD

@@ -1,21 +1,31 @@
 package ot3.insa.fr.geodraw.communication.message;
 
 import java.util.Collection;
+import java.util.List;
 
-import ot3.insa.fr.geodraw.model.Game;
+import ot3.insa.fr.geodraw.model.GameInfo;
 
 public class GameList extends Message {
 
-	private final Collection<Game> games;
+	private final List<GameInfo> games;
+	
+	/* true if this is a personnal game list */
+	private final boolean self;
 	
 
-	public GameList(Collection<Game> games) 
+	public GameList(List<GameInfo> games, boolean self) 
 	{
 		super(Type.GAMELIST);
 		this.games = games;
+		this.self = self;
 	}
 
-	public Collection<Game> getGames() {
+	public List<GameInfo> getGames() {
 		return games;
+	}
+	
+	public boolean isSelf()
+	{
+		return self;
 	}
 }
