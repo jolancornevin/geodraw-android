@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ot3.insa.fr.geodraw.communication.Client;
+import ot3.insa.fr.geodraw.communication.message.JoinGame;
 import ot3.insa.fr.geodraw.model.Game;
 import ot3.insa.fr.geodraw.model.GameInfo;
 
@@ -169,12 +171,14 @@ public class GamesListActivity extends Fragment {
             btn_join.setImageResource(R.drawable.launch_white_24dp);
             btn_edit.setImageResource(R.drawable.edit_white_24dp);
             btn_like.setImageResource(R.drawable.star_white_24dp);
-
+            //TODO : GAME ID ET PLAYER ID STATIQUE
             btn_join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Client.theClient.sendMessage(new JoinGame("kaka", -1));
                     Intent intent = new Intent(parentView.getContext(), MapsActivity.class);
                     startActivity(intent);
+
                 }
             });
 
