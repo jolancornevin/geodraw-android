@@ -1,7 +1,12 @@
 package ot3.insa.fr.geodraw.communication;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+
 import com.m5c.safesockets.SafeSocket;
 
+import ot3.insa.fr.geodraw.MapsActivity;
 import ot3.insa.fr.geodraw.communication.message.AddLatLng;
 import ot3.insa.fr.geodraw.communication.message.GameList;
 import ot3.insa.fr.geodraw.communication.message.GameListRequest;
@@ -19,7 +24,19 @@ import ot3.insa.fr.geodraw.utils.Utils;
  */
 
 public abstract class ClientListener {
+    /*
+    private Handler mHandler;
 
+    public ClientListener(){
+        mHandler = new Handler(Looper.getMainLooper()) {
+
+            @Override
+            public void handleMessage(Message inputMessage) {
+                //Depending on the type of message, call a method
+            }
+        };
+
+    } */
     void HandleTraceMessage(TraceMessage m, SafeSocket sender) {
 
     }

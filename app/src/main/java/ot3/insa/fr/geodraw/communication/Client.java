@@ -1,9 +1,13 @@
 package ot3.insa.fr.geodraw.communication;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.m5c.safesockets.BreakdownObserver;
 import com.m5c.safesockets.SafeSocket;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -25,20 +29,19 @@ public class Client extends Side
 	private final int port;
 	private final String ip;
 
-	private List<ClientListener> listeners;
+	private List<ClientListener> listeners = new LinkedList<ClientListener>();
 	private ConcurrentLinkedQueue<String> messagePool; 
 
 	public static Client theClient;
 
 	private Thread connector;
 	private Thread msgSender;
-	
+
 	private boolean isStopped;
 
 	static {
-		theClient = new Client("localhost",8080);
+		theClient = new Client("192.168.0.24",8080);
 	}
-
 
 	public Client(final String ip, final int port)
 	{
@@ -55,12 +58,12 @@ public class Client extends Side
 		connect();
 
 		msgSender = new Thread("Message sender") {
-			
+
 			@Override
 			public void run() {
 				String msg = "";
 				boolean sent = true;
-				
+
 				while(!isStopped){
 					
 					if(sent){
@@ -68,11 +71,11 @@ public class Client extends Side
 						msg = messagePool.poll();
 					}
 					
-					if(msg == "")
+					if(msg== null || msg == "")
 					{
 						sent = true;
 						try {
-							Thread.currentThread().wait(500);
+							Thread.sleep(500);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -85,7 +88,7 @@ public class Client extends Side
 								sent = true;
 							else
 								try {
-									Thread.currentThread().wait(500);
+									Thread.sleep(500);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
@@ -167,7 +170,7 @@ public class Client extends Side
 		
 	}
 
-	@Override
+
 	void HandleTraceMessage(TraceMessage m, SafeSocket sender) {
 		//System.out.println(Utils.gson.toJson(m.getTrace()));
 		//Utils.gson.toJson(m.getTrace());
@@ -175,9 +178,10 @@ public class Client extends Side
 		for(ClientListener cl : listeners) {
 			cl.HandleTraceMessage(m, sender);
 		}
+
 	}
 
-	@Override
+
 	void HandleGameList(GameList m, SafeSocket sender) {
 		// TODO Auto-generated method stub
 		for(ClientListener cl : listeners) {
@@ -187,12 +191,12 @@ public class Client extends Side
 
 
 	/** Server method*/
-	@Override
+
 	void HandleGameListRequest(GameListRequest m, SafeSocket sender) {return;}
 
 
 	/** Server method*/
-	@Override
+
 	void HandleJoinGame(JoinGame m, SafeSocket sender) {return;}
 
 
