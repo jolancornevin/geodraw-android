@@ -133,7 +133,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private void initSelf(){
         //Init drawing
         //TODO : Select color randomly
-        thisUser = new UserDrawing(5,Color.GREEN, "lalala");
+        thisUser = new UserDrawing(5,Color.GREEN, "arda");
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
                 .color(thisUser.getSelfColor());
         thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
@@ -201,7 +201,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // Get new coordinates of other users and add them
             void HandleAddLatLng(AddLatLng m, SafeSocket sender) {
 
-                if(m.getGameID() != thisUser.getCurrentGame()) {
+                if(m.getGameID() != thisUser.getCurrentGame() || m.getUserID() == thisUser.getNickname()) {
                     return;
                 }
                 String username = m.getUserID();
@@ -219,12 +219,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Polyline currentSegment = usr.getSelfDrawing();
 
                     if (currentSegment == null) { //
-                        PolylineOptions lineOptions = new PolylineOptions()
-                                .width(usr.getSelfWidth())
-                                .color(usr.getSelfColor());
-                        Polyline newSegment = mMap.addPolyline(lineOptions);
-                        usr.setSelfDrawing(newSegment);
-                        drawingList.put(username, usr);
+                        initUserSegment(usr.getNickname());
                     }
 
                     LatLng ltln = new LatLng(m.getLatLng().getLat(), m.getLatLng().getLng());
@@ -291,16 +286,45 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
     }
-    private void updateUserDrawing(String userName, LatLng p)  {
+    private void initUserSegment(final String userName)  {
+        /**
+         * Add existing user drawings into maps
+         */
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run()
+            {
+                UserDrawing usr = drawingList.get(userName);
+
+                PolylineOptions lineOptions = new PolylineOptions()
+                        .width(usr.getSelfWidth())
+                        .color(usr.getSelfColor());
+                Polyline newSegment = mMap.addPolyline(lineOptions);
+                usr.setSelfDrawing(newSegment);
+                drawingList.put(userName, usr);
+            }
+        });
+
+    }
+    private void updateUserDrawing(final String userName, final LatLng p)  {
         /**
          * Update current drawing of the user
          */
+        runOnUiThread(new Runnable() {
 
-        UserDrawing k = drawingList.get(userName);
-        List<LatLng> oldPoints = k.getSelfDrawing().getPoints();
-        oldPoints.add(p);
-        k.setDrawingPoints(oldPoints);
-        drawingList.put(userName,k);
+            @Override
+            public void run()
+            {
+                UserDrawing k = drawingList.get(userName);
+
+                List<LatLng> oldPoints = k.getSelfDrawing().getPoints();
+                oldPoints.add(p);
+                k.setDrawingPoints(oldPoints);
+                drawingList.put(userName,k);
+            }
+        });
+
     }
 
     private void removeUser(String userName){
@@ -437,7 +461,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             this.selfWidth = width;
             this.selfDrawings = new ArrayList<>();
             this.isDrawing = true;
-            this.currentGameID = -1;
+            this.currentGameID = 0;
         }
 
         public int getSelfColor() {

@@ -40,7 +40,7 @@ public class Client extends Side
 	private boolean isStopped;
 
 	static {
-		theClient = new Client("192.168.0.24",8080);
+		theClient = new Client("192.168.43.156",8080);
 	}
 
 	public Client(final String ip, final int port)

@@ -175,7 +175,7 @@ public class GamesListActivity extends Fragment {
             btn_join.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Client.theClient.sendMessage(new JoinGame("kaka", -1));
+                    Client.theClient.sendMessage(new JoinGame("kaka", 0));
                     Intent intent = new Intent(parentView.getContext(), MapsActivity.class);
                     startActivity(intent);
 
