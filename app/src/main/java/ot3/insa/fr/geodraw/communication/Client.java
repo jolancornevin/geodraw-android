@@ -1,8 +1,5 @@
 package ot3.insa.fr.geodraw.communication;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import com.m5c.safesockets.BreakdownObserver;
 import com.m5c.safesockets.SafeSocket;
 
@@ -26,8 +23,8 @@ import ot3.insa.fr.geodraw.utils.Utils;
 public class Client extends Side
 {
 	private SafeSocket socket;
-	private final int port;
-	private final String ip;
+	private int port;
+	private String ip;
 
 	private List<ClientListener> listeners = new LinkedList<ClientListener>();
 	private ConcurrentLinkedQueue<String> messagePool; 
@@ -40,9 +37,16 @@ public class Client extends Side
 	private boolean isStopped;
 
 	static {
-		theClient = new Client("192.168.43.156",8080);
+		theClient = new Client("163.172.150.12",8080);
 	}
 
+	public void setIp(String ip){
+        this.ip = ip;
+    }
+
+    public void setPort(int port){
+        this.port = port;
+    }
 	public Client(final String ip, final int port)
 	{
 		super();

@@ -4,23 +4,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-
-
-import android.location.LocationListener;
 import android.widget.Button;
 
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +26,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.m5c.safesockets.SafeSocket;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +34,7 @@ import java.util.Random;
 import ot3.insa.fr.geodraw.communication.Client;
 import ot3.insa.fr.geodraw.communication.ClientListener;
 import ot3.insa.fr.geodraw.communication.message.AddLatLng;
-import ot3.insa.fr.geodraw.communication.message.GameList;
 import ot3.insa.fr.geodraw.communication.message.GameUpdate;
-import ot3.insa.fr.geodraw.communication.message.JoinedGame;
 import ot3.insa.fr.geodraw.communication.message.TraceMessage;
 import ot3.insa.fr.geodraw.communication.message.Vote;
 import ot3.insa.fr.geodraw.model.Segment;
@@ -127,13 +119,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 promptGPS();
             }
             thisUser.setDrawingPoints(points);
-
         }
     }
     private void initSelf(){
         //Init drawing
         //TODO : Select color randomly
-        thisUser = new UserDrawing(5,Color.GREEN, "arda");
+        thisUser = new UserDrawing(5,Color.RED, "adrien");
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
                 .color(thisUser.getSelfColor());
         thisUser.setSelfDrawing(mMap.addPolyline(lineOptions));
