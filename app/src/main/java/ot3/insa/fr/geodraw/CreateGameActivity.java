@@ -112,6 +112,7 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
                 Client.theClient.getUsername());
         //TODO insert in BD
         Client.theClient.sendMessage(game);
+        System.out.println("Added a game and sent it to server");
         startActivity(intent);
     }
 
