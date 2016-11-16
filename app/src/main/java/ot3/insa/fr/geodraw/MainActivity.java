@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GamesListActivity personalGamesActivity;
     private GalleryActivity galleryActivity;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,15 +108,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.my_account) {
-            // Handle the camera action
+            Intent intent = new Intent(getApplicationContext(), UserActivity.class);
+            startActivity(intent);
         } else if (id == R.id.my_friends) {
 
         } else if (id == R.id.chat) {
 
         } else if (id == R.id.settings) {
-
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
