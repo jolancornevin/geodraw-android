@@ -36,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity implements Validator.Val
         server_address = (EditText) findViewById(R.id.server_address);
         server_port = (EditText) findViewById(R.id.server_port);
 
+        server_address.setText(theClient.getIp());
+        server_port.setText(theClient.getPort().toString());
+
         validator = new Validator(this);
         validator.setValidationListener(this);
 

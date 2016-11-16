@@ -33,6 +33,9 @@ public class UserActivity extends AppCompatActivity implements Validator.Validat
 
         username = (EditText) findViewById(R.id.username);
 
+        //TODO
+        //username.setText(theClient.getNickname());
+
         validator = new Validator(this);
         validator.setValidationListener(this);
 

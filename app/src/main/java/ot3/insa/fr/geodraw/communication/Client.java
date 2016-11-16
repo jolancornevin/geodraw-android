@@ -162,7 +162,15 @@ public class Client extends Side
 	{
 		connect();
 	}
-	
+
+	public String getIp() {
+		return ip;
+	}
+
+	public Integer getPort() {
+		return port;
+	}
+
 	class ClientBreak implements BreakdownObserver
 	{
 
