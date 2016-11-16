@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import ot3.insa.fr.geodraw.communication.Client;
+import ot3.insa.fr.geodraw.communication.message.GameListRequest;
 import ot3.insa.fr.geodraw.communication.message.JoinGame;
 import ot3.insa.fr.geodraw.model.Game;
 import ot3.insa.fr.geodraw.model.GameInfo;
@@ -62,6 +63,7 @@ public class GamesListActivity extends Fragment {
 
         //Récupération de la liste des personnes
         //TODO à remplacer par les données de la bd
+        Client.theClient.sendMessage(new GameListRequest(Client.theClient.getUsername()));
         if (this.typeList == TypeList.ONGOING) {
             listGames = (ArrayList) Game.getMockGamesOnGoing();
         } else if (this.typeList == TypeList.PERSONNAL) {
