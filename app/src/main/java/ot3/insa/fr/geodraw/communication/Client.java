@@ -28,6 +28,7 @@ public class Client extends Side
 	private SafeSocket socket;
 	private final int port;
 	private final String ip;
+	private String username = "";
 
 	private List<ClientListener> listeners = new LinkedList<ClientListener>();
 	private ConcurrentLinkedQueue<String> messagePool; 
@@ -40,7 +41,7 @@ public class Client extends Side
 	private boolean isStopped;
 
 	static {
-		theClient = new Client("192.168.43.156",8080);
+		theClient = new Client("163.172.150.132",8080);
 	}
 
 	public Client(final String ip, final int port)
@@ -137,7 +138,15 @@ public class Client extends Side
 		if(socket != null)
 			socket.disconnect();
 	}
-	
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getUsername(String username) {
+		return this.username;
+	}
+
 	private void connect()
 	{
 		connector = new Thread("Connector") {
