@@ -19,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import ot3.insa.fr.geodraw.communication.Client;
+import ot3.insa.fr.geodraw.communication.message.NewGame;
 import ot3.insa.fr.geodraw.model.Game;
 
 
@@ -93,16 +95,23 @@ public class CreateGameActivity extends AppCompatActivity implements Validator.V
 
         Date end = c.getTime();
 
-        Game game = new Game(-1, game_name.getText().toString(),
+        /*Game game = new Game(-1, game_name.getText().toString(),
                 isPrivate.isChecked(),
                 0,
                 Integer.parseInt(max_nb_gamers.getText().toString()),
                 Integer.parseInt(nb_hours.getText().toString())+Integer.parseInt(nb_days.getText().toString())*24,
                 Integer.parseInt(nb_minutes.getText().toString()),
                 theme.getText().toString());
-
+        */
+        NewGame game = new NewGame( game_name.getText().toString(),
+                isPrivate.isChecked(),
+                Integer.parseInt(max_nb_gamers.getText().toString()),
+                start,
+                end,
+                theme.getText().toString(),
+                Client.theClient.getUsername());
         //TODO insert in BD
-
+        Client.theClient.sendMessage(game);
         startActivity(intent);
     }
 

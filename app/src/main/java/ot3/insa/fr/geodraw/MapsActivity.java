@@ -125,7 +125,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Init drawing
         //TODO : Select color randomly
 
-        thisUser = new UserDrawing(5,Color.RED, "jbdshj");
+        thisUser = new UserDrawing(5,Color.RED, Client.theClient.getUsername());
 
         PolylineOptions lineOptions = new PolylineOptions().width(thisUser.getSelfWidth())
                 .color(thisUser.getSelfColor());

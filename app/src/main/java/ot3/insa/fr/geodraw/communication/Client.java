@@ -26,7 +26,7 @@ public class Client extends Side
 
 	private int port;
 	private String ip;
-	private String username = "";
+	private String username = "generic"+( (int)(Math.random() * 100000));
 
 	private List<ClientListener> listeners = new LinkedList<ClientListener>();
 	private ConcurrentLinkedQueue<String> messagePool; 
@@ -149,7 +149,7 @@ public class Client extends Side
 		this.username = username;
 	}
 
-	public String getUsername(String username) {
+	public String getUsername() {
 		return this.username;
 	}
 
