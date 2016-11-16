@@ -54,7 +54,7 @@ public class UserActivity extends AppCompatActivity implements Validator.Validat
     public void onValidationSucceeded() {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         //TODO set the username of the client
-        Client.theClient.setUsername(username.toString());
+        Client.theClient.setUsername(username.getText().toString());
         startActivity(intent);
     }
 
